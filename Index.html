@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siren Spotify</title>
     <link rel="stylesheet" href="https://use.typekit.net/sne0cjk.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconscout/unicons/css/line.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
                body {
             margin: 0;
@@ -257,6 +259,7 @@
             max-width: 100%;
             height: auto;
         }
+
     </style>
 </head>
 <body>
@@ -285,7 +288,7 @@
                         <img src="hope2.png" alt="Icon 2">
                         <div class="song-title">FALLIN’ TWICE</div>
                         <div class="song-details">
-                            <span>247,950,276</span>
+                            <span>2,276</span>
                             <span>3:05</span>
                         </div>
                     </li>
@@ -301,9 +304,9 @@
                 <div class="favorite-btn" id="favorite-btn">♡</div>
 
                 <div class="controls">
-                    <button id="prev-btn">⏮</button>
-                    <button id="play-pause-btn">▶</button>
-                    <button id="next-btn">⏭</button>
+                    <button id="prev-btn"><i class="fas fa-backward"></i></button>
+                    <button id="play-pause-btn"><i class="fas fa-play"></i>                    </button>
+                    <button id="next-btn"><i class="fas fa-forward"></i>                    </button>
                 </div>
 
                 <div class="progress-container">
@@ -361,7 +364,7 @@
         function loadSong(song) {
             audio.src = song.url;
             audio.load();
-            playPauseBtn.textContent = '▶';
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>'; // Icône play
             isPlaying = false;
 
             // Update the background image of container-right
@@ -385,10 +388,10 @@
         playPauseBtn.addEventListener('click', () => {
             if (isPlaying) {
                 audio.pause();
-                playPauseBtn.textContent = '▶';
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>'; // Icône play
             } else {
                 audio.play();
-                playPauseBtn.textContent = '❚❚';
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Icône pause
             }
             isPlaying = !isPlaying;
         });
@@ -413,14 +416,14 @@
             currentSongIndex = (currentSongIndex + 1) % songs.length;
             loadSong(songs[currentSongIndex]);
             audio.play();
-            playPauseBtn.textContent = '❚❚';
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Icône pause
         });
 
         prevBtn.addEventListener('click', () => {
             currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
             loadSong(songs[currentSongIndex]);
             audio.play();
-            playPauseBtn.textContent = '❚❚';
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Icône pause
         });
 
         // Favorite button functionality
@@ -436,7 +439,7 @@
                 currentSongIndex = index;
                 loadSong(songs[currentSongIndex]);
                 audio.play();
-                playPauseBtn.textContent = '❚❚';
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Icône pause
             });
         });
 
@@ -445,3 +448,4 @@
     </script>
 </body>
 </html>
+
