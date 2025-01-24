@@ -119,14 +119,42 @@
             background: none;
             border: none;
             color: white;
-            font-size: 25px;
-            margin: 0 15px;
+            font-size: 15px;
+            margin: 15px 15px 0 15px;
             cursor: pointer;
         }
 
         .controls button:hover {
             color: #9A88A1;
         }
+
+        #replayBtn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    margin: 15px 15px 0 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#replayBtn.active {
+    color: #9A88A1; /* Couleur différente quand Replay est activé */
+}
+
+#shuffleBtn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    margin: 15px 15px 0 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#shuffleBtn.active {
+    color: #9A88A1; /* Couleur différente quand Shuffle est activé */
+}
 
         .progress-container {
             width: 100%;
@@ -288,7 +316,7 @@
                         <img src="hope2.png" alt="Icon 2">
                         <div class="song-title">FALLIN’ TWICE</div>
                         <div class="song-details">
-                            <span>2,276</span>
+                            <span>247,950,276</span>
                             <span>3:05</span>
                         </div>
                     </li>
@@ -304,9 +332,17 @@
                 <div class="favorite-btn" id="favorite-btn">♡</div>
 
                 <div class="controls">
+                    <button id="shuffleBtn" class="control-btn">
+                        <i class="fas fa-random"></i>
+                    </button>
+                    
                     <button id="prev-btn"><i class="fas fa-backward"></i></button>
                     <button id="play-pause-btn"><i class="fas fa-play"></i>                    </button>
                     <button id="next-btn"><i class="fas fa-forward"></i>                    </button>
+                    <button id="replayBtn" class="control-btn">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    
                 </div>
 
                 <div class="progress-container">
@@ -426,6 +462,88 @@
             playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Icône pause
         });
 
+// Replay button functionality
+const replayBtn = document.getElementById('replayBtn');
+let isReplayActive = false;
+
+replayBtn.addEventListener('click', () => {
+    isReplayActive = !isReplayActive; // Toggle replay mode
+    replayBtn.classList.toggle('active', isReplayActive); // Ajouter une classe pour changer la couleur
+
+    if (isReplayActive) {
+        audio.addEventListener('ended', replayMusic); // Activer le replay
+    } else {
+        audio.removeEventListener('ended', replayMusic); // Désactiver le replay
+    }
+});
+
+// Fonction pour relancer la musique
+function replayMusic() {
+    audio.currentTime = 0;
+    audio.play();
+}
+
+// Shuffle button functionality
+const shuffleBtn = document.getElementById('shuffleBtn');
+let isShuffleActive = false;
+
+shuffleBtn.addEventListener('click', () => {
+    isShuffleActive = !isShuffleActive; // Toggle shuffle mode
+    shuffleBtn.classList.toggle('active', isShuffleActive); // Change color
+});
+
+// Fonction pour jouer une musique aléatoire
+function playRandomSong() {
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * songs.length); // Choisir un index aléatoire
+    } while (randomIndex === currentSongIndex); // Assure qu'on ne joue pas la même musique en boucle
+    currentSongIndex = randomIndex;
+    loadSong(songs[currentSongIndex]);
+    audio.play();
+    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Icône pause
+}
+
+// Fonction pour passer à la chanson suivante
+function nextSong() {
+    if (isShuffleActive) {
+        playRandomSong(); // Mode aléatoire activé
+    } else {
+        currentSongIndex = (currentSongIndex + 1) % songs.length; // Lecture séquentielle
+        loadSong(songs[currentSongIndex]);
+        audio.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Icône pause
+    }
+}
+
+// Modifier le bouton "Next" pour prendre en compte le mode aléatoire
+nextBtn.addEventListener('click', nextSong);
+
+
+// Fonction pour jouer une musique aléatoire
+function playRandomSong() {
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * songs.length); // Choisir un index aléatoire
+    } while (randomIndex === currentSongIndex); // Assure qu'on ne joue pas la même musique en boucle
+    currentSongIndex = randomIndex;
+    loadSong(songs[currentSongIndex]);
+    audio.play();
+    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Icône pause
+}
+
+// Modifier le bouton "Next" pour prendre en compte le mode aléatoire
+nextBtn.addEventListener('click', () => {
+    if (isShuffleActive) {
+        playRandomSong(); // Mode aléatoire activé
+    } else {
+        currentSongIndex = (currentSongIndex + 1) % songs.length; // Lecture séquentielle
+        loadSong(songs[currentSongIndex]);
+        audio.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Icône pause
+    }
+});
+
         // Favorite button functionality
         favoriteBtn.addEventListener('click', () => {
             songs[currentSongIndex].favorited = !songs[currentSongIndex].favorited;
@@ -448,4 +566,3 @@
     </script>
 </body>
 </html>
-
