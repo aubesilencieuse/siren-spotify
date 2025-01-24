@@ -369,6 +369,9 @@
 
             // Update the favorite button state
             favoriteBtn.classList.toggle('favorited', song.favorited);
+
+            // Update the duration display
+            duration.textContent = formatTime(song.duration);
         }
 
         // Format time function
@@ -390,23 +393,22 @@
             isPlaying = !isPlaying;
         });
 
-        // Progress bar functionality
+        // Update progress bar as audio plays
         audio.addEventListener('timeupdate', () => {
-            const current = audio.currentTime;
-            const total = audio.duration;
-            const percent = (current / total) * 100;
-            progress.style.width = `${percent}%`;
-            currentTime.textContent = formatTime(current);
+            const progressPercent = (audio.currentTime / audio.duration) * 100;
+            progress.style.width = `${progressPercent}%`;
+            currentTime.textContent = formatTime(audio.currentTime);
         });
 
-        progressBar.addEventListener('click', (e) => {
-            const clickPosition = e.offsetX;
-            const totalWidth = progressBar.offsetWidth;
-            const clickedTime = (clickPosition / totalWidth) * audio.duration;
-            audio.currentTime = clickedTime;
+        // Change progress on click
+        progressBar.addEventListener('click', (event) => {
+            const clickPosition = event.offsetX;
+            const progressBarWidth = progressBar.offsetWidth;
+            const newTime = (clickPosition / progressBarWidth) * audio.duration;
+            audio.currentTime = newTime;
         });
 
-        // Next and previous song functionality
+        // Next and Prev buttons functionality
         nextBtn.addEventListener('click', () => {
             currentSongIndex = (currentSongIndex + 1) % songs.length;
             loadSong(songs[currentSongIndex]);
@@ -421,10 +423,16 @@
             playPauseBtn.textContent = '❚❚';
         });
 
-        // Song click to change song
-        const songList = document.querySelectorAll('.song');
-        songList.forEach((songElement, index) => {
-            songElement.addEventListener('click', () => {
+        // Favorite button functionality
+        favoriteBtn.addEventListener('click', () => {
+            songs[currentSongIndex].favorited = !songs[currentSongIndex].favorited;
+            favoriteBtn.classList.toggle('favorited', songs[currentSongIndex].favorited);
+        });
+
+        // Song list click event to change background
+        const songItems = document.querySelectorAll('.song');
+        songItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
                 currentSongIndex = index;
                 loadSong(songs[currentSongIndex]);
                 audio.play();
@@ -432,13 +440,7 @@
             });
         });
 
-        // Favorite button click functionality
-        favoriteBtn.addEventListener('click', () => {
-            songs[currentSongIndex].favorited = !songs[currentSongIndex].favorited;
-            favoriteBtn.classList.toggle('favorited');
-        });
-
-        // Initialize the first song
+        // Initialize the player
         loadSong(songs[currentSongIndex]);
     </script>
 </body>
