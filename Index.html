@@ -6,7 +6,7 @@
     <title>Siren Spotify</title>
     <link rel="stylesheet" href="https://use.typekit.net/sne0cjk.css">
     <style>
-        body {
+               body {
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #181818;
@@ -271,7 +271,7 @@
             <div class="popular">
                 <h2>Popular</h2>
                 <ul class="song-list">
-                    <li class="song" data-index="0">
+                    <li class="song" data-url="https://drive.google.com/uc?export=download&id=1aFhnXSmWyRQbxdqmkWqEIJBCMccPHwWV">
                         <span class="song-number">1.</span>
                         <img src="hope.png" alt="Icon 1">
                         <div class="song-title">HOPE IS THE THING WITH FEATHERS (COVER)</div>
@@ -280,7 +280,7 @@
                             <span>3:50</span>
                         </div>
                     </li>
-                    <li class="song" data-index="1">
+                    <li class="song" data-url="https://www.dropbox.com/scl/fi/z10hik4js98b1iv1q15h6/Hope2.MP3?rlkey=yq6beqx9pl9z49j1l9hwp4zzo&st=6y1pz4h9&raw=1">
                         <span class="song-number">2.</span>
                         <img src="hope2.png" alt="Icon 2">
                         <div class="song-title">FALLIN’ TWICE</div>
@@ -335,12 +335,12 @@
         const audio = new Audio();
         let isPlaying = false;
 
-        // Song List with favorited status
+        // Song List
         const songs = [
             {
                 title: 'HOPE IS THE THING WITH FEATHERS (COVER)',
                 artist: 'Artist 1',
-                url: 'Hope.mp3',
+                url: 'https://example.com/path-to-your-audio-file/Hope.mp3',
                 background: 'hope.png',
                 favorited: false,
                 duration: 230, // 3:50
@@ -348,7 +348,7 @@
             {
                 title: 'FALLIN’ TWICE',
                 artist: 'Artist 2',
-                url: 'https://drive.google.com/uc?export=download&id=198Y9ExqrOPkNqGRKaCRU0fNdmUJFHjkt',
+                url: 'https://www.dropbox.com/scl/fi/z10hik4js98b1iv1q15h6/Hope2.MP3?rlkey=yq6beqx9pl9z49j1l9hwp4zzo&st=6y1pz4h9&raw=1',
                 background: 'hope2.png',
                 favorited: false,
                 duration: 185, // 3:05
@@ -429,7 +429,7 @@
             favoriteBtn.classList.toggle('favorited', songs[currentSongIndex].favorited);
         });
 
-        // Song list click event to change background
+        // Song list click event to load and play selected song
         const songItems = document.querySelectorAll('.song');
         songItems.forEach((item, index) => {
             item.addEventListener('click', () => {
@@ -440,8 +440,9 @@
             });
         });
 
-        // Initialize the player
+        // Initialize the player with the first song
         loadSong(songs[currentSongIndex]);
     </script>
 </body>
 </html>
+
